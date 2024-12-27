@@ -1,16 +1,9 @@
-WITH start1 AS(
-SELECT machine_id,process_id, timestamp
-FROM activity
-WHERE activity_type = 'start'
-),
-end1 AS(
-SELECT machine_id,process_id, timestamp
-FROM activity
-WHERE activity_type = 'end'
-)
-SELECT start1.machine_id, ROUND(AVG(end1.timestamp - start1.timestamp),3) AS processing_time 
-FROM end1
-INNER JOIN start1
-ON end1.machine_id = start1.machine_id
-AND end1.process_id = start1.process_id
+SELECT 
+a1.machine_id,
+ROUND(AVG(a2.timestamp - a1.timestamp),3) AS processing_time 
+FROM activity a1
+INNER JOIN activity a2
+ON a1.machine_id = a2.machine_id
+AND a1.process_id = a2.process_id
+AND a1.timestamp < a2.timestamp
 GROUP BY 1;
