@@ -1,10 +1,6 @@
-WITH cnts AS(
-SELECT managerid, count(id) AS cnt
-FROM employee
-GROUP BY 1
-HAVING cnt >=5
-)
-SELECT e.name 
-FROM employee e
-INNER JOIN cnts
-ON cnts.managerid = e.id;
+SELECT e1.name
+FROM employee e1
+INNER JOIN employee e2
+ON e1.id = e2.managerid
+GROUP BY e2.managerid
+HAVING COUNT(e2.managerid) >= 5;
